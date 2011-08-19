@@ -1,11 +1,16 @@
 var add;
 add = function(string) {
-  if (!string) {
-    return 0;
-  }
-  return string.split(/[^\d]/).map(function(s) {
+  var digits, negatives;
+  digits = string.split(/[^\d|^-]/).map(function(s) {
     return Number(s);
-  }).reduce(function(sum, num) {
+  });
+  negatives = digits.filter(function(d) {
+    return d < 0;
+  });
+  if (negatives.length) {
+    throw "Negatives not allowed: " + negatives.join(', ');
+  }
+  return digits.reduce(function(sum, num) {
     return sum + num;
   });
 };
@@ -41,9 +46,14 @@ describe('add', function() {
     expect(add('//;\n9;4;2')).toEqual(15);
     return expect(add('//x\n2x3x4x4')).toEqual(13);
   });
-  return it('does not allow negative numbers', function() {
+  it('does not allow negative numbers', function() {
     return expect(function() {
       return add('-1,4,-5');
-    }).toThrow;
+    }).toThrow();
+  });
+  return it('includes the negatives in the error message', function() {
+    return expect(function() {
+      return add('-4,5,-65');
+    }).toThrow("Negatives not allowed: -4, -65");
   });
 });
