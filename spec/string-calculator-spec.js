@@ -37,8 +37,13 @@ describe('add', function() {
     expect(add('1\n2')).toEqual(3);
     return expect(add('3,4\n2')).toEqual(9);
   });
-  return it('allows custom delimiters', function() {
+  it('allows custom delimiters', function() {
     expect(add('//;\n9;4;2')).toEqual(15);
     return expect(add('//x\n2x3x4x4')).toEqual(13);
+  });
+  return it('does not allow negative numbers', function() {
+    return expect(function() {
+      return add('-1,4,-5');
+    }).toThrow;
   });
 });
