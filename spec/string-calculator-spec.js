@@ -1,17 +1,11 @@
 
 var add = function(string) {
-  string = string.replace("\n", ",");
-
-  var splitAndAdd = function() {
-    var tokens = string.split(',');
-    var sum = 0;
-    for (var i=0; i<tokens.length; i++) {
-      sum += Number(tokens[i]);
-    }
-    return sum;
-  };
-
-  return splitAndAdd();
+  var tokens = string.split(/[^\d]/);
+  var sum = 0;
+  for (var i=0; i<tokens.length; i++) {
+    sum += Number(tokens[i]);
+  }
+  return sum;
 };
 
 describe("add", function() {
@@ -41,6 +35,12 @@ describe("add", function() {
     expect(add('1\n2')).toEqual(3);
     expect(add('3,4\n2')).toEqual(9);
   });
+
+  it ("allows custom delimiters", function() {
+    expect(add('//;\n9;4;2')).toEqual(15);
+    expect(add('//x\n2x3x4x4')).toEqual(13);
+  });
+
 
 });
 
