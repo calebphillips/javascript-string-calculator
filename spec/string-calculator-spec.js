@@ -1,5 +1,6 @@
 
 var add = function(string) {
+  string = string.replace("\n", ",");
 
   var splitAndAdd = function() {
     var tokens = string.split(',');
@@ -34,6 +35,11 @@ describe("add", function() {
       oneHundredTwenties[i] = "20";
     }
     expect(add(oneHundredTwenties.join(','))).toEqual(2000);
+  });
+
+  it ("allows the newline as a delimiter", function() {
+    expect(add('1\n2')).toEqual(3);
+    expect(add('3,4\n2')).toEqual(9);
   });
 
 });
